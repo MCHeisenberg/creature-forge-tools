@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Creature Forge Tools</title>
+  <meta name="description" content="Practical Unity Editor tools for AI-assisted 3D asset workflows.">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --panel: #121827;
+      --panel-2: #171f33;
+      --text: #f8fafc;
+      --muted: #aab4c5;
+      --line: #263149;
+      --accent: #7dd3fc;
+      --accent-2: #c084fc;
+      --good: #86efac;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.16), transparent 32rem),
+        radial-gradient(circle at top right, rgba(192, 132, 252, 0.14), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 24px 72px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 0 48px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #07111f;
+      font-weight: 900;
+      box-shadow: 0 14px 36px rgba(125, 211, 252, 0.18);
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .hero {
+      padding: 72px 0 56px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(18, 24, 39, 0.72);
+      color: var(--good);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 74px);
+      line-height: 0.96;
+      margin: 0 0 22px;
+      letter-spacing: -2.4px;
+    }
+
+    .lead {
+      font-size: 21px;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 30px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #07111f;
+      border: 0;
+    }
+
+    .mock {
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+        var(--panel);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 22px 80px rgba(0,0,0,0.32);
+    }
+
+    .mock-top {
+      height: 42px;
+      background: #0e1422;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3b455b;
+    }
+
+    .mock-body {
+      padding: 22px;
+    }
+
+    .mock-row {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: rgba(23, 31, 51, 0.72);
+    }
+
+    .mock-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .mock-value {
+      font-weight: 800;
+    }
+
+    section {
+      padding: 44px 0;
+    }
+
+    h2 {
+      font-size: 34px;
+      line-height: 1.1;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+
+    .section-text {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 780px;
+      margin: 0 0 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      background: rgba(18, 24, 39, 0.78);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .status {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 12px;
+      color: var(--muted);
+      background: rgba(18, 24, 39, 0.72);
+      font-size: 14px;
+      margin-top: 16px;
+    }
+
+    .support {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(125, 211, 252, 0.08), rgba(192, 132, 252, 0.08));
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+      margin-top: 42px;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 42px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">CF</div>
+        <div>Creature Forge Tools</div>
+      </div>
+      <nav>
+        <a href="#tools">Tools</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#support">Support</a>
+        <a href="https://github.com/MCHeisenberg">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Unity Editor Tools · AI Asset Workflows</div>
+          <h1>Practical tools for faster 3D asset pipelines.</h1>
+          <p class="lead">
+            Creature Forge Tools builds focused Unity Editor extensions for AI-assisted 3D asset generation, importing, organization, and validation.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#support">Contact Support</a>
+            <a class="button" href="https://github.com/MCHeisenberg">View GitHub</a>
+          </div>
+        </div>
+
+        <div class="mock" aria-label="Unity Editor workflow preview">
+          <div class="mock-top">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-row">
+              <div class="mock-label">Workflow</div>
+              <div class="mock-value">Generate → Import → Organize → Validate</div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-label">Focus</div>
+              <div class="mock-value">Unity Editor automation</div>
+            </div>
+            <div class="mock-row">
+              <div class="mock-label">Built for</div>
+              <div class="mock-value">Indie developers and small teams</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tools">
+        <h2>Focused Unity tooling, not heavy pipeline bloat.</h2>
+        <p class="section-text">
+          Our tools are designed to reduce repetitive editor work and help developers move from AI-generated assets to usable Unity project assets with fewer manual steps.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h3>AI-assisted assets</h3>
+            <p>Utilities for handling AI-generated 3D asset workflows inside Unity.</p>
+          </div>
+          <div class="card">
+            <h3>Import automation</h3>
+            <p>Editor-side helpers for bringing assets into projects with cleaner structure.</p>
+          </div>
+          <div class="card">
+            <h3>Pipeline validation</h3>
+            <p>Lightweight checks and organization tools for faster prototyping loops.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow">
+        <h2>Current product direction</h2>
+        <p class="section-text">
+          Creature Forge Tools is currently focused on practical Unity Editor utilities for AI-assisted 3D asset workflows, including generation handoff, asset importing, prefab preparation, and workflow cleanup.
+        </p>
+        <div class="status">Status: Publisher profile and early tooling pipeline in progress.</div>
+      </section>
+
+      <section id="support">
+        <div class="support">
+          <h2>Support</h2>
+          <p class="section-text">
+            For support, documentation, business inquiries, or publisher verification, contact:
+          </p>
+          <p>
+            <a href="mailto:qqdd85842@gmail.com">qqdd85842@gmail.com</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© 2026 Creature Forge Tools. Independent Unity tooling publisher.</div>
+      <div><a href="https://github.com/MCHeisenberg">github.com/MCHeisenberg</a></div>
+    </footer>
+  </div>
+</body>
+</html>
